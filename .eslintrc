@@ -1,0 +1,19 @@
+{
+  "extends": "airbnb-base",
+  "rules": {
+    "eol-last": ["error", "never"],
+    "no-console": "off",
+    "no-useless-escape": "off",
+    "no-shadow": "off",
+    "linebreak-style": "off",
+    "consistent-return": "off",
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": [
+          "_id"
+        ]
+      }
+    ]
+  }
+}
