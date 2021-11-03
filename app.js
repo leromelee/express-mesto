@@ -3,10 +3,11 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const { celebrate, Joi } = require('celebrate');
+const { errors } = require('celebrate');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const auth = require('./middlewares/auth');
-const errors = require('./middlewares/errors');
+const errorsHandler = require('./middlewares/errors');
 const { login, createUsers } = require('./controllers/users');
 
 const app = express();
@@ -18,14 +19,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
-});
-
-app.use(auth);
-app.use(errors);
-app.use('/', usersRouter);
-app.use('/', cardsRouter);
-app.use('*', (req, res) => {
-  res.status(404).json({ message: 'Не найдено' });
 });
 
 app.post('/signin', celebrate({
@@ -48,6 +41,16 @@ app.post('/signup', celebrate({
     }),
   }),
 }), createUsers);
+
+app.use(auth);
+app.use('/', usersRouter);
+app.use('/', cardsRouter);
+app.all('*', (req, res) => {
+  res.status(404).send({ message: 'Не найдено' });
+});
+
+app.use(errors());
+app.use(errorsHandler);
 
 app.listen(PORT, () => {
   console.log(`Используется порт: ${PORT}`);

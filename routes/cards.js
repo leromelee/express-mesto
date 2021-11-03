@@ -9,7 +9,7 @@ router.get('/', getCards);
 router.post('/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),
-    link: Joi.string().custom((value, helper) => {
+    link: Joi.string().required().custom((value, helper) => {
       if (validator.isURL(value, { require_protocol: true })) {
         return value;
       }

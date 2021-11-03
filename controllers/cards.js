@@ -9,7 +9,6 @@ module.exports.getCards = (req, res, next) => {
 module.exports.createCard = (req, res, next) => {
   console.log(req.body);
   const { name, link } = req.body;
-  
   const owner = req.user._id;
 
   Card.create({ name, link, owner })
@@ -23,8 +22,7 @@ module.exports.createCard = (req, res, next) => {
       const e = new Error('Ошибка на сервере');
       e.statusCode = 500;
       return next(e);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.likeCard = (req, res, next) => {
@@ -56,8 +54,7 @@ module.exports.likeCard = (req, res, next) => {
       const e = new Error('Ошибка на сервере');
       e.statusCode = 500;
       return next(e);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.dislikeCard = (req, res, next) => {
@@ -89,8 +86,7 @@ module.exports.dislikeCard = (req, res, next) => {
       const e = new Error('Ошибка на сервере');
       e.statusCode = 500;
       return next(e);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.deleteCard = (req, res, next) => {
@@ -106,7 +102,7 @@ module.exports.deleteCard = (req, res, next) => {
         err.statusCode = 404;
         return next(err);
       }
-      if (card.owner === reqId) {
+      if (card.owner.equals(reqId)) {
         Card.findOneAndRemove({
           _id: req.params.cardId,
           owner: reqId,
@@ -134,6 +130,5 @@ module.exports.deleteCard = (req, res, next) => {
       const e = new Error('Ошибка на сервере');
       e.statusCode = 500;
       return next(e);
-    })
-    .catch(next);
+    });
 };

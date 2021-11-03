@@ -21,7 +21,7 @@ router.patch('/me', celebrate({
 }), updateProfile);
 router.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().custom((value, helper) => {
+    avatar: Joi.string().required().custom((value, helper) => {
       if (validator.isURL(value, { require_protocol: true })) {
         return value;
       }

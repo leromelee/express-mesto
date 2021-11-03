@@ -34,8 +34,7 @@ module.exports.createUser = (req, res, next) => {
       const e = new Error('На сервере Ошибка');
       e.statusCode = 500;
       return next(e);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.getProfile = (req, res, next) => {
@@ -56,7 +55,9 @@ module.exports.getProfile = (req, res, next) => {
         err.statusCode = 404;
         return next(err);
       }
-      res.status(500).send({ message: 'Ошибка' });
+      const e = new Error('На сервере Ошибка');
+      e.statusCode = 500;
+      return next(e);
     });
 };
 
@@ -88,8 +89,7 @@ module.exports.updateProfile = (req, res, next) => {
       const e = new Error('На сервере Ошибка');
       e.statusCode = 500;
       return next(e);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.updateAvatar = (req, res, next) => {
@@ -116,7 +116,9 @@ module.exports.updateAvatar = (req, res, next) => {
         err.statusCode = 400;
         return next(err);
       }
-      res.status(500).send({ message: 'Ошибка' });
+      const e = new Error('На сервере Ошибка');
+      e.statusCode = 500;
+      return next(e);
     })
     .catch(next);
 };
@@ -154,9 +156,9 @@ module.exports.createUsers = (req, res, next) => {
           const e = new Error('На сервере Ошибка');
           e.statusCode = 500;
           return next(e);
-        })
-        .catch(next);
-    });
+        });
+    })
+    .catch(next);
 };
 
 module.exports.login = (req, res, next) => {
