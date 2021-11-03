@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
+const notFoundError = require('http-errors');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const auth = require('./middlewares/auth');
@@ -45,8 +46,9 @@ app.post('/signup', celebrate({
 app.use(auth);
 app.use('/', usersRouter);
 app.use('/', cardsRouter);
-app.all('*', (req, res) => {
-  res.status(404).send({ message: 'Не найдено' });
+
+app.use('*', () => {
+  throw notFoundError(404, 'Не найдено');
 });
 
 app.use(errors());
